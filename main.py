@@ -5,10 +5,14 @@ from telethon.sessions import StringSession
 from getpass import getpass
 from fetch_messages import fetch_messages
 from parse_articles import parse_articles
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Load API credentials from environment variables
-api_id = 21358148
-api_hash = "6b376040f0a1dba385814a879e5ce4eb"
+api_id = int(os.environ.get("TELEGRAM_API_ID"))
+api_hash = os.environ.get("TELEGRAM_API_HASH")
 
 # Channel username
 channel_username = "@nytimes"
