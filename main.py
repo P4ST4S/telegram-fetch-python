@@ -3,8 +3,8 @@ import json
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from getpass import getpass
-from fetch_messages import fetch_messages
-from parse_articles import parse_articles
+from functions.fetch_messages import fetch_messages
+from functions.parse_articles import parse_articles
 from dotenv import load_dotenv
 
 # Load environment variables
