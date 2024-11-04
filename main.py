@@ -23,37 +23,31 @@ parse_file_name = "out/parsed_articles.json"
 
 
 async def main():
+    # Ensure output directory exists
+    os.makedirs("out", exist_ok=True)
+
+    # Read session string from file or initialize a new one
+    session_path = "session.txt"
+    session_string = open(session_path).read(
+    ) if os.path.exists(session_path) else ""
+    string_session = StringSession(session_string)
+    client = TelegramClient(string_session, api_id, api_hash)
+
     try:
-
-        # Check if the output directory exists
-        if not os.path.exists("out"):
-            os.makedirs("out")
-
-        # Check if session file exists
-        if not os.path.exists("session.txt"):
-            session_string = None
-            string_session = StringSession("")
-            client = TelegramClient(string_session, api_id, api_hash)
-
+        if not session_string:
             await client.start(
                 phone=lambda: input("Please enter your number: "),
                 password=lambda: getpass("Please enter your password: "),
                 code_callback=lambda: input(
                     "Please enter the code you received: "),
             )
-
             print("You are now connected!")
             print("Your session string:", client.session.save())
 
             # Save session string to a file for future use
-
-            with open("session.txt", "w") as session_file:
+            with open(session_path, "w") as session_file:
                 session_file.write(client.session.save())
         else:
-            session_string = open("session.txt", "r").read()
-            string_session = StringSession(session_string)
-            client = TelegramClient(string_session, api_id, api_hash)
-
             await client.connect()
 
         # Fetch and parse messages
